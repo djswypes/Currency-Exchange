@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e);
     }
   }
-  void calculateResult(var value) {
+  void calculateResult(var value) 
     setState(() {
       try {
         result = (rate! * double.parse(value)).toStringAsFixed(2);
