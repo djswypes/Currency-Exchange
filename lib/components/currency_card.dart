@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'currency_data.dart';
+import '../utilities/constants.dart';
+import '../services/currency_data.dart';
 
 class CurrencyCard extends StatelessWidget {
   const CurrencyCard({

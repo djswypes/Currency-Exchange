@@ -95,7 +95,7 @@ Future getCurrencyData (String from, String to) async{
       '$coinAPIURL/$from/$to?apikey=$apiKey';
   http.Response response = await http.get(Uri.parse(requestURL));
   if(response.statusCode == 200) {
-    var data = jsonDecode(response.body)['rate'];
+    var data = jsonDecode(response.body)['rate'].toDouble();
     print(data);
   return  data;
   } else {

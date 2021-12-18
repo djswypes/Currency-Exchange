@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'constants.dart';
+import 'utilities/constants.dart';
 
 void main () {
   runApp(MyApp());

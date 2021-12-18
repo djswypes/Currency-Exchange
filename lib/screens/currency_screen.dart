@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:currency_exchange_app/constants.dart';
-import 'package:currency_exchange_app/currency_data.dart';
-import 'package:currency_exchange_app/currency_card.dart';
+import 'package:currency_exchange_app/utilities/constants.dart';
+import 'package:currency_exchange_app/services/currency_data.dart';
+import 'package:currency_exchange_app/components/currency_card.dart';
 
 class CurrencyScreen extends StatefulWidget {
   const CurrencyScreen({Key? key}) : super(key: key);

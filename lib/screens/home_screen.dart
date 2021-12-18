@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-import 'package:currency_exchange_app/result_card.dart';
+import 'package:currency_exchange_app/components/result_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import '../constants.dart';
-import '../currency_data.dart';
-import '../selected_currency_card.dart';
+import '../utilities/constants.dart';
+import '../services/currency_data.dart';
+import '../components/selected_currency_card.dart';
 import 'currency_screen.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
 
@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final textEditingController = TextEditingController();
   final myFocusNode =  FocusNode();
   String result = '';
   String amount = '';
@@ -29,6 +30,16 @@ class _HomeScreenState extends State<HomeScreen> {
   String toCurrencyImage = 'icons/flags/png/us.png';
   String? fromCurrencyPackage = 'country_icons';
   String? toCurrencyPackage = 'country_icons';
+
+  void calculate(var value) {
+    setState(() {
+      try {
+        result = (rate! * double.parse(value)).toStringAsFixed(2);
+      } catch(e) {
+        print(e);
+      }
+    });
+  }
 
   void updateFirstCard (Currency currency) {
     setState(() {
@@ -59,11 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
       print('here');
     try {
        var data = await CurrencyData().getCurrencyData(from, to);
+       print('pass');
        isWaiting = false;
         setState(() {
           rate = data;
         });
        print('here');
+       calculate(amount);
     } catch (e) {
       print(e);
     }
@@ -156,22 +169,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   TextField(
+                    controller: textEditingController,
                     focusNode: myFocusNode,
                     cursorColor: Colors.black,
-                    maxLength: 25,
+                    maxLength: 10,
                     keyboardType: TextInputType.number,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                     ),
-                    inputFormatters: [
-                      ThousandsFormatter(allowFraction: true)
-                    ],
                     decoration: InputDecoration(
                       contentPadding:  EdgeInsets.all(15),
                       labelText: 'Amount',
                       labelStyle: TextStyle(
-                        color: myFocusNode.hasFocus? Color(0XFF495BFE): Colors.grey,
+                        color: myFocusNode.hasFocus? Color(0XFF495BFE): Colors.grey.shade500,
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -195,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSubmitted: (value) async{
                       setState((){
                         amount = value;
-                        result = (rate! * double.parse(value)).toStringAsFixed(3);
+                        calculate(amount);
                       });
                     },
                   ),
@@ -203,11 +214,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   ResultCard(
-                    rate: isWaiting?'?':rate!.toStringAsFixed(3),
+                    rate: isWaiting?'?':rate!.toStringAsFixed(2),
                     amount: amount,
                     from: from,
                     to: to,
-                    result: isWaiting?'?':result,
+                    result: isWaiting||textEditingController.text.isEmpty?'?':result,
                   ),
                 ],
               ),
