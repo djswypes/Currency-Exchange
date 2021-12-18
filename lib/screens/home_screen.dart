@@ -31,16 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String? fromCurrencyPackage = 'country_icons';
   String? toCurrencyPackage = 'country_icons';
 
-  void calculate(var value) {
-    setState(() {
-      try {
-        result = (rate! * double.parse(value)).toStringAsFixed(2);
-      } catch(e) {
-        print(e);
-      }
-    });
-  }
-
   void updateFirstCard (Currency currency) {
     setState(() {
       from = currency.tickerName;
@@ -76,10 +66,19 @@ class _HomeScreenState extends State<HomeScreen> {
           rate = data;
         });
        print('here');
-       calculate(amount);
+       calculateResult(amount);
     } catch (e) {
       print(e);
     }
+  }
+  void calculateResult(var value) {
+    setState(() {
+      try {
+        result = (rate! * double.parse(value)).toStringAsFixed(2);
+      } catch(e) {
+        print(e);
+      }
+    });
   }
   @override
   void initState() {
@@ -206,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSubmitted: (value) async{
                       setState((){
                         amount = value;
-                        calculate(amount);
+                        calculateResult(amount);
                       });
                     },
                   ),
