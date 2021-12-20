@@ -13,9 +13,13 @@ class CurrencyScreen extends StatefulWidget {
 }
 
 class _CurrencyScreenState extends State<CurrencyScreen> {
+
   TextEditingController textEditingController = TextEditingController();
+
   List<Currency> currencyListOnSearch = [];
+
   bool isVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +58,10 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       onChanged: (value) {
                         setState(() {
                           currencyListOnSearch = currenciesList
-                              .where((currency) => currency.name.toLowerCase().contains(value.toLowerCase())).toList();
+                              .where((currency) => currency.search
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase()))
+                              .toList();
                         });
                       },
                       cursorColor: Colors.black,
@@ -73,7 +80,8 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                     visible: isVisible,
                     child: TextButton(
                       style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                        overlayColor: MaterialStateProperty.all<Color>(
+                            Colors.transparent),
                       ),
                       onPressed: () {
                         setState(() {
@@ -96,29 +104,34 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             ),
           ),
         ),
-        body: textEditingController.text.isNotEmpty&&currencyListOnSearch.isEmpty
+        body: textEditingController.text.isNotEmpty &&
+                currencyListOnSearch.isEmpty
             ? Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical:20),
-                    child: Text(
-                      'Not found',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey
-                    ),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        'Not found',
+                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                      ),
                     ),
                   ),
+                ],
+              )
+            : Scrollbar(
+              interactive: true,
+              child: ListView.builder(
+                  itemCount: textEditingController.text.isEmpty
+                      ? currenciesList.length
+                      : currencyListOnSearch.length,
+                  itemBuilder: (context, index) => CurrencyCard(
+                    currency: textEditingController.text.isEmpty
+                        ? currenciesList[index]
+                        : currencyListOnSearch[index],
+                  ),
                 ),
-              ],
-            ) :
-        ListView.builder(
-          itemCount: textEditingController.text.isEmpty?currenciesList.length:currencyListOnSearch.length,
-          itemBuilder: (context, index) => CurrencyCard(
-            currency: textEditingController.text.isEmpty?currenciesList[index]:currencyListOnSearch[index],
-          ),
-        ));
+            ));
   }
 }

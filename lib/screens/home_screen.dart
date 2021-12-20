@@ -9,7 +9,6 @@ import '../utilities/constants.dart';
 import '../services/currency_data.dart';
 import '../components/selected_currency_card.dart';
 import 'currency_screen.dart';
-import 'package:pattern_formatter/pattern_formatter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e);
     }
   }
-  void calculateResult(var value) 
+  void calculateResult(var value) {
     setState(() {
       try {
         result = (rate! * double.parse(value)).toStringAsFixed(2);

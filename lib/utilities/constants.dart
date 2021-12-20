@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:currency_exchange_app/screens/home_screen.dart';
 const  kBackgroundColor = Color(0XFFFAFAFA);
 
 const kHeaderTextStyle = TextStyle(
@@ -9,7 +8,8 @@ const kHeaderTextStyle = TextStyle(
 );
 
 const kResultCardShadow = BoxShadow(
-  blurRadius: 5,
+  offset: Offset(4, 3),
+  blurRadius: 8,
   color: Colors.black12,
 );
 
