@@ -205,6 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState((){
                         amount = value;
                         calculateResult(amount);
+                        if(rate == null) {
+                          getData();
+                        }
                       });
                     },
                   ),

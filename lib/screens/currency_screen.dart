@@ -58,10 +58,13 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       onChanged: (value) {
                         setState(() {
                           currencyListOnSearch = currenciesList
-                              .where((currency) => currency.search
-                                  .toLowerCase()
-                                  .contains(value.toLowerCase()))
-                              .toList();
+                              .where((currency) {
+                                bool currencyTicker = currency.tickerName.toLowerCase().contains(value.toLowerCase());
+                                bool currencyName = currency.name.toLowerCase().contains(value.toLowerCase());
+                                if(currencyTicker||currencyName) {
+                                  return true;
+                                }return false;
+                          }).toList();
                         });
                       },
                       cursorColor: Colors.black,
