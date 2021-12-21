@@ -2,7 +2,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 class Currency {
   Currency({ required this.name,required this.tickerName,required this.flag, this.package});
-
   final String name;
   final String tickerName;
   final String flag;

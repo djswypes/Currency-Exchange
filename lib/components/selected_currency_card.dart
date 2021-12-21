@@ -49,7 +49,7 @@ class SelectedCurrencyCard extends StatelessWidget {
                 child: const Icon(
                   Icons.arrow_drop_down,
                   size: 31,
-                  color: Color(0XFF495BFE),
+                  color: Colors.black,
                 ),
               ),
             ],

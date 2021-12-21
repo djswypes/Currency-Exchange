@@ -8,7 +8,7 @@ const kHeaderTextStyle = TextStyle(
 );
 
 const kResultCardShadow = BoxShadow(
-  offset: Offset(4, 3),
+  offset: Offset(2,2),
   blurRadius: 8,
   color: Colors.black12,
 );

@@ -9,6 +9,7 @@ import '../utilities/constants.dart';
 import '../services/currency_data.dart';
 import '../components/selected_currency_card.dart';
 import 'currency_screen.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final myFormat = NumberFormat.currency(locale:'en_us', decimalDigits: 2);
   final textEditingController = TextEditingController();
   final myFocusNode =  FocusNode();
   String result = '';
@@ -32,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void updateFirstCard (Currency currency) {
     setState(() {
-      from = currency.tickerName;
       fromCurrencyImage = currency.flag;
+      from = currency.tickerName;
       if(currency.package == null) {
         fromCurrencyPackage = null;
       } else {
@@ -44,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void updateSecondCard (Currency currency) {
     setState(() {
-      to = currency.tickerName;
       toCurrencyImage = currency.flag;
+      to = currency.tickerName;
       if(currency.package == null) {
         toCurrencyPackage = null;
       } else {
@@ -81,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getData();
     myFocusNode.addListener((){setState((){});});
@@ -97,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.5, vertical: 15),
+        padding: EdgeInsets.symmetric(horizontal: 38.0, vertical: 0.0),
         child: Center(
           child: ListView(
             shrinkWrap: true,
@@ -138,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: 40,
+                        width: 35,
                       ),
                       Expanded(
                         child: SelectedCurrencyCard(
@@ -164,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   TextField(
                     controller: textEditingController,
@@ -215,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   ResultCard(
-                    rate: isWaiting?'?':rate!.toStringAsFixed(2),
+                    rate: isWaiting?'?':myFormat.format(rate!),
                     amount: amount,
                     from: from,
                     to: to,
