@@ -21,7 +21,7 @@ class ResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.symmetric(vertical: 20),
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white,

@@ -110,7 +110,6 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
         body: textEditingController.text.isNotEmpty &&
                 currencyListOnSearch.isEmpty
             ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
                     child: Container(
