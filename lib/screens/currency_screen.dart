@@ -27,7 +27,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
           leading: IconButton(
             icon: const Icon(
               Icons.keyboard_arrow_down_outlined,
-              color: Color(0XFF495BFE),
+              color: Colors.black,
               size: 50,
             ),
             onPressed: () {
