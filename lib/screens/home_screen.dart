@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import '../utilities/constants.dart';
 import '../services/currency_data.dart';
@@ -19,11 +20,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final myFormat = NumberFormat.currency(locale:'en_us', decimalDigits: 2);
+  final myFormat = NumberFormat();
   final textEditingController = TextEditingController();
-  final myFocusNode =  FocusNode();
-  String result = '';
-  String amount = '';
+  final myFocusNode = FocusNode();
+  String? result;
+  String? amount;
   double? rate;
   String from = 'GBP';
   String to = 'USD';
@@ -32,11 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String? fromCurrencyPackage = 'country_icons';
   String? toCurrencyPackage = 'country_icons';
 
-  void updateFirstCard (Currency currency) {
+  void updateFirstCard(Currency currency) {
     setState(() {
       fromCurrencyImage = currency.flag;
       from = currency.tickerName;
-      if(currency.package == null) {
+      if (currency.package == null) {
         fromCurrencyPackage = null;
       } else {
         fromCurrencyPackage = currency.package;
@@ -44,49 +45,57 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void updateSecondCard (Currency currency) {
+  void updateSecondCard(Currency currency) {
     setState(() {
       toCurrencyImage = currency.flag;
       to = currency.tickerName;
-      if(currency.package == null) {
+      if (currency.package == null) {
         toCurrencyPackage = null;
       } else {
         toCurrencyPackage = currency.package;
       }
     });
   }
+
   bool isWaiting = false;
   void getData() async {
-      isWaiting = true;
-      print('here');
+    isWaiting = true;
     try {
-       var data = await CurrencyData().getCurrencyData(from, to);
-       print('pass');
-       isWaiting = false;
-        setState(() {
-          rate = data;
-        });
-       print('here');
-       calculateResult(amount);
+      var data = await CurrencyData().getCurrencyData(from, to);
+      isWaiting = false;
+      setState(() {
+        String inString = data.toStringAsFixed(2);
+        rate = double.parse(inString);
+      });
+      if(textEditingController.text.isNotEmpty) {
+        calculateResult(amount);
+      }
     } catch (e) {
+      // ignore: avoid_print
       print(e);
     }
   }
+
   void calculateResult(var value) {
     setState(() {
       try {
         result = (rate! * double.parse(value)).toStringAsFixed(2);
-      } catch(e) {
+      } catch (e) {
+        // ignore: avoid_print
         print(e);
       }
     });
   }
+
   @override
   void initState() {
     super.initState();
     getData();
-    myFocusNode.addListener((){setState((){});});
-    }
+    myFocusNode.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,8 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                               updateFirstCard(currency);
                               getData();
-                            } catch(e) {
-                             print('Exception Handled');
+                            } catch (e) {
+                              // ignore: avoid_print
+                              print('Exception Handled');
                             }
                           },
                           currencyTicker: from,
@@ -153,7 +163,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                               updateSecondCard(currency);
                               getData();
-                            } catch(e) {
+                            } catch (e) {
+                              // ignore: avoid_print
                               print('Exception Handled');
                             }
                           },
@@ -171,17 +182,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: textEditingController,
                     focusNode: myFocusNode,
                     cursorColor: Colors.black,
-                    maxLength: 10,
+                    maxLength: 19,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r"\d+\.?\d*"))
+                    ],
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                     ),
                     decoration: InputDecoration(
-                      contentPadding:  EdgeInsets.all(15),
+                      contentPadding: EdgeInsets.all(15),
                       labelText: 'Amount',
                       labelStyle: TextStyle(
-                        color: myFocusNode.hasFocus? Color(0XFF495BFE): Colors.grey.shade500,
+                        color: myFocusNode.hasFocus
+                            ? Color(0XFF495BFE)
+                            : Colors.grey.shade500,
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -190,23 +206,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       counterText: '',
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color(0XFF5D5D5D),
-                            width: 3
-                        ),
+                        borderSide:
+                            BorderSide(color: Color(0XFF5D5D5D), width: 3),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color(0XFF495BFE),
-                            width: 3
-                        ),
+                        borderSide:
+                            BorderSide(color: Color(0XFF495BFE), width: 3),
                       ),
                     ),
-                    onSubmitted: (value) async{
-                      setState((){
-                        amount = value;
-                        calculateResult(amount);
-                        if(rate == null) {
+                    onSubmitted: (value)  {
+                      setState(() {
+                        if (textEditingController.text.isEmpty) {
+                          amount = null;
+                        } else {
+                          final valueWithoutCommas = value.replaceAll(',', '');
+                          amount = valueWithoutCommas;
+                          calculateResult(amount);
+                        }
+                        if (rate == null) {
                           getData();
                         }
                       });
@@ -216,11 +233,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   ResultCard(
-                    rate: isWaiting?'?':myFormat.format(rate!),
-                    amount: amount,
+                    rate: isWaiting ? '?' : myFormat.format(rate),
+                    amount: amount ?? '',
                     from: from,
                     to: to,
-                    result: isWaiting||textEditingController.text.isEmpty?'?':result,
+                    result: isWaiting || textEditingController.text.isEmpty
+                        ? '?'
+                        : myFormat.format(double.parse(result!)),
                   ),
                 ],
               ),

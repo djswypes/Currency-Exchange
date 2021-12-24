@@ -85,7 +85,7 @@ class Currency {
 ];
 
 const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
-const apiKey = '544FA31F-D3C4-479A-A19D-52277151C63B';
+const apiKey = '58F109CF-D684-439E-9305-9C5EB961990B';
 
 class CurrencyData {
 Future getCurrencyData (String from, String to) async{
@@ -102,7 +102,6 @@ Future getCurrencyData (String from, String to) async{
   }
 }
 }
-
 
 
 

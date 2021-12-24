@@ -31,35 +31,37 @@ class ResultCard extends StatelessWidget {
             kResultCardShadow,
           ]
       ),
-      child: Column(
-        children: [
-          Text(
-            '$amount $from =',
-            style: TextStyle(
-                fontSize: 18
+      child: Center(
+        child: Column(
+          children: [
+            Text(
+              '$amount $from =',
+              style: TextStyle(
+                  fontSize: 18
+              ),
             ),
-          ),
-          SizedBox(
-            height: 9,
-          ),
-          Text(
-            '$result $to',
-            style: TextStyle(
-              fontSize: 33,
-              fontWeight: FontWeight.bold,
+            SizedBox(
+              height: 9,
             ),
-          ),
-          SizedBox(
-            height: 9,
-          ),
-          Text(
-            'Rate 1 $from = $rate $to',
-            style: TextStyle(
-              fontSize: 15,
-              color: Color(0XFF0223FF),
+            Text(
+              '$result $to',
+              style: TextStyle(
+                fontSize: 33,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          )
-        ],
+            SizedBox(
+              height: 9,
+            ),
+            Text(
+              'Rate 1 $from = $rate $to',
+              style: TextStyle(
+                fontSize: 15,
+                color: Color(0XFF0223FF),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
