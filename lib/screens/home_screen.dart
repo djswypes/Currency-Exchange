@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final myFormat = NumberFormat();
   final textEditingController = TextEditingController();
   final myFocusNode = FocusNode();
-  String? result;
+  String? _result;
   String? amount;
   double? rate;
   String from = 'GBP';
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void calculateResult(var value) {
     setState(() {
       try {
-        result = (rate! * double.parse(value)).toStringAsFixed(2);
+        _result = (rate! * double.parse(value)).toStringAsFixed(2);
       } catch (e) {
         // ignore: avoid_print
         print(e);
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     to: to,
                     result: isWaiting || textEditingController.text.isEmpty
                         ? '?'
-                        : myFormat.format(double.parse(result!)),
+                        : myFormat.format(double.parse(_result!)),
                   ),
                 ],
               ),

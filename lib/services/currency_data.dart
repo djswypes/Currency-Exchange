@@ -89,8 +89,7 @@ const apiKey = '58F109CF-D684-439E-9305-9C5EB961990B';
 
 class CurrencyData {
 Future getCurrencyData (String from, String to) async{
-  String requestURL =
-      '$coinAPIURL/$from/$to?apikey=$apiKey';
+  String requestURL = '$coinAPIURL/$from/$to?apikey=$apiKey';
   http.Response response = await http.get(Uri.parse(requestURL));
   if(response.statusCode == 200) {
     var data = jsonDecode(response.body)['rate'].toDouble();
@@ -102,6 +101,7 @@ Future getCurrencyData (String from, String to) async{
   }
 }
 }
+
 
 
 
