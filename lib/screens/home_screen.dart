@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final myFormat = NumberFormat();
   final textEditingController = TextEditingController();
   final myFocusNode = FocusNode();
-  String? _result;
+  String? result;
   String? amount;
   double? rate;
   String from = 'GBP';
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void calculateResult(var value) {
     setState(() {
       try {
-        _result = (rate! * double.parse(value)).toStringAsFixed(2);
+        result = (rate! * double.parse(value)).toStringAsFixed(2);
       } catch (e) {
         // ignore: avoid_print
         print(e);
@@ -154,19 +154,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: SelectedCurrencyCard(
                           onTap: () async {
-                            try {
                               var currency = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CurrencyScreen(),
                                 ),
                               );
-                              updateSecondCard(currency);
-                              getData();
-                            } catch (e) {
-                              // ignore: avoid_print
-                              print('Exception Handled');
-                            }
+                              if(currency != null) {
+                                updateSecondCard(currency);
+                                getData();
+                              }
                           },
                           currencyTicker: to,
                           currencyImage: toCurrencyImage,
@@ -239,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     to: to,
                     result: isWaiting || textEditingController.text.isEmpty
                         ? '?'
-                        : myFormat.format(double.parse(_result!)),
+                        : myFormat.format(double.parse(result!)),
                   ),
                 ],
               ),
