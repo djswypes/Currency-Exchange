@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     getData();
     myFocusNode.addListener(() {
-      setState(() {});
+      setState((){});
     });
   }
 
